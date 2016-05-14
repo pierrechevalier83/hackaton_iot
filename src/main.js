@@ -43,6 +43,8 @@ function initialize() {
         handleExpiredMessage();
      } else if(msg.event === 'missed'){
         handleMissedMessage();
+     } else if(msg.event === 'setText'){
+        setLcdText(msg.text);
      }
   });
 
@@ -105,6 +107,8 @@ function readSensorValue() {
     if (state === STATE.push) {
       state = STATE.listening;
       updateState();
+    } else if(state === STATE.connected){
+      socket.send({event: 'expired'});
     }
 
   }
@@ -134,6 +138,7 @@ function pull() {
 function connect() {
   console.log('connected!', state);
   socket.send({event: 'push'});
+  socket.send({event: 'server:connected'});
 
   updateState();
 
@@ -160,6 +165,8 @@ function connectionExpired(){
 
   clearTimeout(connectionTimeout);
   socket.send({event: 'expired'});
+  socket.send({event: 'server:disconnected'});
+
 }
 
 function resetExpiryTimeout(){
@@ -197,6 +204,15 @@ function updateState(){
       lcd.write("Hello, World!");
       break;
   }
+}
+
+function setLcdText(text, scroll){
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.write(text.substr(0, 15));
+  lcd.setCursor(0,1);
+  lcd.write(text.substr(16, 32));
+  if(scroll) lcd.scroll();
 }
 
 initialize();
