@@ -101,6 +101,7 @@ function pull() {
 }
 
 function connect() {
+  socket.send({event: 'push'});
   greenLed.on();
   redLed.off();
   console.log('connected!', state);
