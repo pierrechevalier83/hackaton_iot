@@ -67,6 +67,9 @@ function initialize() {
         handleMissedMessage();
      }
   });
+
+  buzzer.playSound(buzzerModule.DO, 5000);
+  buzzer.stopSound();
 }
 
 function handlePushMessage(){
