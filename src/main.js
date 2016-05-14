@@ -31,7 +31,8 @@ var groveSensor = require("jsupm_grove");
 
 const SENSORS = require('./sensors');
 
-var socket = require('./socket').init();
+var socket = require('./socket');
+socket.init();
 
 var touch = new sensorModule.TTP223(SENSORS.touch);
 var buzzer = new buzzerModule.Buzzer(SENSORS.buzzer);
