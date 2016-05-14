@@ -30,7 +30,11 @@ var redLed = new groveSensor.GroveLed(SENSORS.leds.red);
 var greenLed = new groveSensor.GroveLed(SENSORS.leds.green);
 
 function initialize() {
-  socket.init(() => socket.send({event: 'server:connected'}));
+  socket.init(() => {
+    state = STATE.connected;
+    socket.send({event: 'server:connected'});
+  });
+
   state = STATE.listening;
   setInterval(readSensorValue, 100);
 
