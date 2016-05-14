@@ -180,7 +180,10 @@ function updateState(){
       greenLed.off();
       lcd.setColor(255, 0, 0);
       lcd.clear();
-      lcd.write("Please, don't\nlet me hang!");
+      lcd.write("Please, don't");
+      lcd.setCursor(1,0);
+      lcd.write("let me hang!");
+      lcd.setCursor(0,0);
       break;
     case STATE.push:
       redLed.off();
