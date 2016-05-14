@@ -39,7 +39,7 @@ var buzzer = new buzzerModule.Buzzer(5);
 function readSensorValue() {
     if ( touch.isPressed() ) {
         console.log(touch.name() + " is pressed");
-        buzzer.playSound(buzzerModule.DO, 5)
+        buzzer.playSound(buzzerModule.DO, 10000)
     } else {
         console.log(touch.name() + " is not pressed");
         buzzer.stopSound();
