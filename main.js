@@ -31,7 +31,7 @@ var groveSensor = require("jsupm_grove");
 
 var touch = new sensorModule.TTP223(2);
 var buzzer = new buzzerModule.Buzzer(5);
-var redLed = new led groveSensor.GroveLed(6);
+var redLed = new groveSensor.GroveLed(6);
 
 function readSensorValue() {
     if ( touch.isPressed() ) {
