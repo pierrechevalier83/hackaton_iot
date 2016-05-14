@@ -109,6 +109,7 @@ function connect() {
   redLight.off();
 }
 
+initialize();
 
 // Print message when exiting
 process.on('SIGINT', function()
