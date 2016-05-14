@@ -56,11 +56,11 @@ function initialize() {
      var msg = JSON.parse(data);
 
      if(msg.event === 'push'){
-      this.handlePushMessage()
+        handlePushMessage()
      } else if(msg.event === 'expired'){
-      this.handleExpiredMessage();
+        handleExpiredMessage();
      } else if(msg.event === 'missed'){
-      this.handleMissedMessage();
+        handleMissedMessage();
      }
   });
 }
