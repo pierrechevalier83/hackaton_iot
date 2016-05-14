@@ -25,7 +25,7 @@ var pullTimeout;
 
 var touch = new sensorModule.TTP223(SENSORS.touch);
 var buzzer = new buzzerModule.Buzzer(SENSORS.buzzer);
-var lcd = new Module.Jhd1313m1(SENSORS.lcd);
+var lcd = new lcdModule.Jhd1313m1(SENSORS.lcd);
 var redLed = new groveSensor.GroveLed(SENSORS.leds.red);
 var greenLed = new groveSensor.GroveLed(SENSORS.leds.green);
 
