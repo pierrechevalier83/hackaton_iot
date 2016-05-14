@@ -101,6 +101,12 @@ function readSensorValue() {
         resetExpiryTimeout();
         break;
     }
+  } else {
+    if (state === STATE.push) {
+      state = listening;
+      updateState();
+    }
+
   }
 }
 
