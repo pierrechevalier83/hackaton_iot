@@ -25,26 +25,26 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Load TTP223 touch sensor module
 var sensorModule = require('jsupm_ttp223');
 var buzzerModule = require("jsupm_buzzer");
+var groveSensor = require("jsupm_grove");
 
-
-// Create the TTP223 touch sensor object using GPIO pin 0
 var touch = new sensorModule.TTP223(2);
 var buzzer = new buzzerModule.Buzzer(5);
+var redLed = new led groveSensor.GroveLed(6);
 
-// Check whether or not a finger is near the touch sensor and
-// print accordingly, waiting one second between readings
 function readSensorValue() {
     if ( touch.isPressed() ) {
         console.log(touch.name() + " is pressed");
         buzzer.playSound(buzzerModule.DO, 10000)
+        redLed.on();
     } else {
         console.log(touch.name() + " is not pressed");
         buzzer.stopSound();
+        redLed.off();
     }
 }
+
 setInterval(readSensorValue, 100);
 
 // Print message when exiting
