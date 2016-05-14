@@ -1,6 +1,6 @@
 'use strict';
 
-var WebSocketServer = require('ws');
+var WebSocket = require('ws');
 var ws;
 
 function init() {
