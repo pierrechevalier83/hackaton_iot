@@ -48,6 +48,8 @@ function initialize() {
      }
   });
 
+  socket.send({event: 'server:connected'});
+
   buzzer.playSound(buzzerModule.DO, 5000);
   buzzer.stopSound();
 }
