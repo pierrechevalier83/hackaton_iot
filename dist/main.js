@@ -1,0 +1,55 @@
+/*jslint node:true, vars:true, bitwise:true, unparam:true */
+/*jshint unused:true */
+/*global */
+/*
+ * Author: Zion Orent <zorent@ics.com>
+ * Copyright (c) 2014 Intel Corporation.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+// Load TTP223 touch sensor module
+var sensorModule = require('jsupm_ttp223');
+var buzzerModule = require("jsupm_buzzer");
+
+// Create the TTP223 touch sensor object using GPIO pin 0
+var touch = new sensorModule.TTP223(1);
+var buzzer = new buzzerModule.Buzzer(5);
+
+// Check whether or not a finger is near the touch sensor and
+// print accordingly, waiting one second between readings
+function readSensorValue() {
+    if (touch.isPressed()) {
+        console.log(touch.name() + " is pressed");
+        buzzer.playSound(buzzerModule.DO, 1000000);
+    } else {
+        console.log(touch.name() + " is not pressed");
+        buzzer.stopSound();
+    }
+}
+setInterval(readSensorValue, 1000);
+
+// Print message when exiting
+process.on('SIGINT', function () {
+    console.log("Exiting...");
+    process.exit(0);
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL21haW4uanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQTRCQSxJQUFJLGVBQWUsUUFBUSxjQUFSLENBQW5CO0FBQ0EsSUFBSSxlQUFlLFFBQVEsY0FBUixDQUFuQjs7O0FBSUEsSUFBSSxRQUFRLElBQUksYUFBYSxNQUFqQixDQUF3QixDQUF4QixDQUFaO0FBQ0EsSUFBSSxTQUFTLElBQUksYUFBYSxNQUFqQixDQUF3QixDQUF4QixDQUFiOzs7O0FBSUEsU0FBUyxlQUFULEdBQTJCO0FBQ3ZCLFFBQUssTUFBTSxTQUFOLEVBQUwsRUFBeUI7QUFDckIsZ0JBQVEsR0FBUixDQUFZLE1BQU0sSUFBTixLQUFlLGFBQTNCO0FBQ0EsZUFBTyxTQUFQLENBQWlCLGFBQWEsRUFBOUIsRUFBa0MsT0FBbEM7QUFDSCxLQUhELE1BR087QUFDSCxnQkFBUSxHQUFSLENBQVksTUFBTSxJQUFOLEtBQWUsaUJBQTNCO0FBQ0EsZUFBTyxTQUFQO0FBQ0g7QUFDSjtBQUNELFlBQVksZUFBWixFQUE2QixJQUE3Qjs7O0FBR0EsUUFBUSxFQUFSLENBQVcsUUFBWCxFQUFxQixZQUNyQjtBQUNDLFlBQVEsR0FBUixDQUFZLFlBQVo7QUFDQSxZQUFRLElBQVIsQ0FBYSxDQUFiO0FBQ0EsQ0FKRCIsImZpbGUiOiJtYWluLmpzIiwic291cmNlc0NvbnRlbnQiOlsiLypqc2xpbnQgbm9kZTp0cnVlLCB2YXJzOnRydWUsIGJpdHdpc2U6dHJ1ZSwgdW5wYXJhbTp0cnVlICovXG4vKmpzaGludCB1bnVzZWQ6dHJ1ZSAqL1xuLypnbG9iYWwgKi9cbi8qXG4gKiBBdXRob3I6IFppb24gT3JlbnQgPHpvcmVudEBpY3MuY29tPlxuICogQ29weXJpZ2h0IChjKSAyMDE0IEludGVsIENvcnBvcmF0aW9uLlxuICpcbiAqIFBlcm1pc3Npb24gaXMgaGVyZWJ5IGdyYW50ZWQsIGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVyc29uIG9idGFpbmluZ1xuICogYSBjb3B5IG9mIHRoaXMgc29mdHdhcmUgYW5kIGFzc29jaWF0ZWQgZG9jdW1lbnRhdGlvbiBmaWxlcyAodGhlXG4gKiBcIlNvZnR3YXJlXCIpLCB0byBkZWFsIGluIHRoZSBTb2Z0d2FyZSB3aXRob3V0IHJlc3RyaWN0aW9uLCBpbmNsdWRpbmdcbiAqIHdpdGhvdXQgbGltaXRhdGlvbiB0aGUgcmlnaHRzIHRvIHVzZSwgY29weSwgbW9kaWZ5LCBtZXJnZSwgcHVibGlzaCxcbiAqIGRpc3RyaWJ1dGUsIHN1YmxpY2Vuc2UsIGFuZC9vciBzZWxsIGNvcGllcyBvZiB0aGUgU29mdHdhcmUsIGFuZCB0b1xuICogcGVybWl0IHBlcnNvbnMgdG8gd2hvbSB0aGUgU29mdHdhcmUgaXMgZnVybmlzaGVkIHRvIGRvIHNvLCBzdWJqZWN0IHRvXG4gKiB0aGUgZm9sbG93aW5nIGNvbmRpdGlvbnM6XG4gKlxuICogVGhlIGFib3ZlIGNvcHlyaWdodCBub3RpY2UgYW5kIHRoaXMgcGVybWlzc2lvbiBub3RpY2Ugc2hhbGwgYmVcbiAqIGluY2x1ZGVkIGluIGFsbCBjb3BpZXMgb3Igc3Vic3RhbnRpYWwgcG9ydGlvbnMgb2YgdGhlIFNvZnR3YXJlLlxuICpcbiAqIFRIRSBTT0ZUV0FSRSBJUyBQUk9WSURFRCBcIkFTIElTXCIsIFdJVEhPVVQgV0FSUkFOVFkgT0YgQU5ZIEtJTkQsXG4gKiBFWFBSRVNTIE9SIElNUExJRUQsIElOQ0xVRElORyBCVVQgTk9UIExJTUlURUQgVE8gVEhFIFdBUlJBTlRJRVMgT0ZcbiAqIE1FUkNIQU5UQUJJTElUWSwgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UgQU5EXG4gKiBOT05JTkZSSU5HRU1FTlQuIElOIE5PIEVWRU5UIFNIQUxMIFRIRSBBVVRIT1JTIE9SIENPUFlSSUdIVCBIT0xERVJTIEJFXG4gKiBMSUFCTEUgRk9SIEFOWSBDTEFJTSwgREFNQUdFUyBPUiBPVEhFUiBMSUFCSUxJVFksIFdIRVRIRVIgSU4gQU4gQUNUSU9OXG4gKiBPRiBDT05UUkFDVCwgVE9SVCBPUiBPVEhFUldJU0UsIEFSSVNJTkcgRlJPTSwgT1VUIE9GIE9SIElOIENPTk5FQ1RJT05cbiAqIFdJVEggVEhFIFNPRlRXQVJFIE9SIFRIRSBVU0UgT1IgT1RIRVIgREVBTElOR1MgSU4gVEhFIFNPRlRXQVJFLlxuICovXG5cbi8vIExvYWQgVFRQMjIzIHRvdWNoIHNlbnNvciBtb2R1bGVcbnZhciBzZW5zb3JNb2R1bGUgPSByZXF1aXJlKCdqc3VwbV90dHAyMjMnKTtcbnZhciBidXp6ZXJNb2R1bGUgPSByZXF1aXJlKFwianN1cG1fYnV6emVyXCIpO1xuXG5cbi8vIENyZWF0ZSB0aGUgVFRQMjIzIHRvdWNoIHNlbnNvciBvYmplY3QgdXNpbmcgR1BJTyBwaW4gMFxudmFyIHRvdWNoID0gbmV3IHNlbnNvck1vZHVsZS5UVFAyMjMoMSk7XG52YXIgYnV6emVyID0gbmV3IGJ1enplck1vZHVsZS5CdXp6ZXIoNSk7XG5cbi8vIENoZWNrIHdoZXRoZXIgb3Igbm90IGEgZmluZ2VyIGlzIG5lYXIgdGhlIHRvdWNoIHNlbnNvciBhbmRcbi8vIHByaW50IGFjY29yZGluZ2x5LCB3YWl0aW5nIG9uZSBzZWNvbmQgYmV0d2VlbiByZWFkaW5nc1xuZnVuY3Rpb24gcmVhZFNlbnNvclZhbHVlKCkge1xuICAgIGlmICggdG91Y2guaXNQcmVzc2VkKCkgKSB7XG4gICAgICAgIGNvbnNvbGUubG9nKHRvdWNoLm5hbWUoKSArIFwiIGlzIHByZXNzZWRcIik7XG4gICAgICAgIGJ1enplci5wbGF5U291bmQoYnV6emVyTW9kdWxlLkRPLCAxMDAwMDAwKVxuICAgIH0gZWxzZSB7XG4gICAgICAgIGNvbnNvbGUubG9nKHRvdWNoLm5hbWUoKSArIFwiIGlzIG5vdCBwcmVzc2VkXCIpO1xuICAgICAgICBidXp6ZXIuc3RvcFNvdW5kKCk7XG4gICAgfVxufVxuc2V0SW50ZXJ2YWwocmVhZFNlbnNvclZhbHVlLCAxMDAwKTtcblxuLy8gUHJpbnQgbWVzc2FnZSB3aGVuIGV4aXRpbmdcbnByb2Nlc3Mub24oJ1NJR0lOVCcsIGZ1bmN0aW9uKClcbntcblx0Y29uc29sZS5sb2coXCJFeGl0aW5nLi4uXCIpO1xuXHRwcm9jZXNzLmV4aXQoMCk7XG59KTtcbiJdfQ==
