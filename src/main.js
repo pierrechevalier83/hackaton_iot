@@ -27,6 +27,7 @@
 
 var sensorModule = require('jsupm_ttp223');
 var buzzerModule = require("jsupm_buzzer");
+var lcdModule = require("jsupm_i2clcd");
 var groveSensor = require("jsupm_grove");
 var socket = require('./socket');
 
@@ -48,6 +49,7 @@ var pullTimeout;
 
 var touch = new sensorModule.TTP223(SENSORS.touch);
 var buzzer = new buzzerModule.Buzzer(SENSORS.buzzer);
+var lcd = new lcdModule.Jhd1313m1(SENSORS.lcd);
 var redLed = new groveSensor.GroveLed(SENSORS.leds.red);
 var greenLed = new groveSensor.GroveLed(SENSORS.leds.green);
 
@@ -188,18 +190,29 @@ function updateState(){
     case STATE.listening:
       redLed.off();
       greenLed.off();
+      lcd.setColor(0, 0, 0);
+      lcd.clear();
       break;
     case STATE.pull:
       redLed.on();
       greenLed.off();
+      lcd.setColor(255, 0, 0);
+      lcd.clear();
+      lcd.write("Please, don't let me hang!");
       break;
     case STATE.push:
       redLed.off();
       greenLed.off();
+      lcd.setColor(0, 0, 255);
+      lcd.clear();
+      lcd.write("Anyone there?");
       break;
     case STATE.connected:
       redLed.off();
       greenLed.on();
+      lcd.setColor(0, 255, 0);
+      lcd.clear();
+      lcd.write("Hello, World!");
       break;
   }
 }

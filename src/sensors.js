@@ -5,5 +5,6 @@ module.exports = {
     blue: 8
   },
   buzzer: 5,
-  touch: 2
+  touch: 2,
+  lcd: 0,
 };
