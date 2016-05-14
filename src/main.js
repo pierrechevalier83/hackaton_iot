@@ -43,7 +43,7 @@ function initialize() {
         handleExpiredMessage();
      } else if(msg.event === 'missed'){
         handleMissedMessage();
-     } else if(msg.event === 'setText'){
+     } else if(msg.event === 'setText' && state === STATE.connected){
         setLcdText(msg.text);
      }
   });
