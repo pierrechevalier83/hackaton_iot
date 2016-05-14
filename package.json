@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-     "build": "babel main.js --out-file dist/main.js --source-maps inline",
-     "watch": "babel main.js --watch --out-file dist/main.js --source-maps inline",
-     "deploy": "./run_app.sh",
-     "run_device": "node dist/main"
+    "build": "babel main.js --out-file dist/main.js --source-maps inline",
+    "watch": "babel main.js --watch --out-file dist/main.js --source-maps inline",
+    "deploy": "./run_app.sh",
+    "run_device": "node dist/main"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "homepage": "https://github.com/pierrechevalier83/hackaton_iot#readme",
   "devDependencies": {
     "babel-cli": "^6.8.0"
+  },
+  "dependencies": {
+    "ws": "^1.1.0"
   }
 }

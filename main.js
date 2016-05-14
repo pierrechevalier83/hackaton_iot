@@ -29,21 +29,28 @@ var sensorModule = require('jsupm_ttp223');
 var buzzerModule = require("jsupm_buzzer");
 var groveSensor = require("jsupm_grove");
 
-var touch = new sensorModule.TTP223(2);
-var buzzer = new buzzerModule.Buzzer(5);
-var redLed = new groveSensor.GroveLed(6);
+const SENSORS = require('./sensors');
+
+var socket = require('./socket').init();
+
+var touch = new sensorModule.TTP223(SENSORS.touch);
+var buzzer = new buzzerModule.Buzzer(SENSORS.buzzer);
+var redLed = new groveSensor.GroveLed(SENSORS.leds.red);
+
+function doStuff(){
+  buzzer.playSound(buzzerModule.DO, 10000)
+  redLed.on();
+  setTimeout(() => redLed.off(), 500);
+}
 
 function readSensorValue() {
-    if ( touch.isPressed() ) {
-        console.log(touch.name() + " is pressed");
-        buzzer.playSound(buzzerModule.DO, 10000)
-        redLed.on();
-    } else {
-        console.log(touch.name() + " is not pressed");
-        buzzer.stopSound();
-        redLed.off();
-    }
+  if ( touch.isPressed() ) {
+    console.log(touch.name() + " is pressed");
+    socket.send({event: 'on'});
+  }
 }
+
+socket.onMessage((data) => console.log(data));
 
 setInterval(readSensorValue, 100);
 
