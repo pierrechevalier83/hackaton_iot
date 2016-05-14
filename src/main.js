@@ -68,12 +68,6 @@ function initialize() {
   });
 }
 
-function doStuff(){
-  buzzer.playSound(buzzerModule.DO, 10000)
-  redLed.on();
-  setTimeout(() => redLed.off(), 500);
-}
-
 function readSensorValue() {
   if ( touch.isPressed() ) {
     console.log(touch.name() + " is pressed");
@@ -96,17 +90,20 @@ function readSensorValue() {
 
 function push() {
   socket.send({event: 'push'});
+  console.log('pushing', state);
   // TODO wait listen for 5 seconds and then go back to listening
 }
 
 function pull() {
   redLed.on();
-  buzzer.playSound(buzzerModule.DO, 500);
+  buzzer.playSound(buzzerModule.DO, 5000)
+  console.log('pulling', state);
 }
 
 function connect() {
   greenLed.on();
   redLed.off();
+  console.log('connected!', state);
 }
 
 initialize();
