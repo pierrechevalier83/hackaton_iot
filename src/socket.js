@@ -3,7 +3,7 @@ var WebSocketServer = require('ws');
 var ws;
 
 function init(){
-  var ws = new WebSocket('ws://172.16.40.132:8990');
+  ws = new WebSocket('ws://172.16.40.132:8990');
 
   ws.on('open', function open() {
     // ?
