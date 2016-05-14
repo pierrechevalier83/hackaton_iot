@@ -185,12 +185,15 @@ function updateState(){
     case STATE.pull:
       redLed.on();
       greenLed.off();
+      break;
     case STATE.push:
       redLed.off();
       greenLed.off();
+      break;
     case STATE.connected:
       redLed.off();
       greenLed.on();
+      break;
   }
 }
 
