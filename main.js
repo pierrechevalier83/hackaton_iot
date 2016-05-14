@@ -31,7 +31,7 @@ var buzzerModule = require("jsupm_buzzer");
 
 
 // Create the TTP223 touch sensor object using GPIO pin 0
-var touch = new sensorModule.TTP223(1);
+var touch = new sensorModule.TTP223(2);
 var buzzer = new buzzerModule.Buzzer(5);
 
 // Check whether or not a finger is near the touch sensor and
