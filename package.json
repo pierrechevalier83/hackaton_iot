@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
      "build": "babel main.js --out-file dist/main.js --source-maps inline",
      "watch": "babel main.js --watch --out-file dist/main.js --source-maps inline",
-     "deploy": "./run_app.sh"
+     "deploy": "./run_app.sh",
+     "run_device": "node dist/main"
   },
   "repository": {
     "type": "git",
