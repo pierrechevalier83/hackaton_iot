@@ -59,7 +59,7 @@ function initialize() {
          break;
        case STATE.push:
          state = STATE.connected;
-         connnect();
+         connect();
          break;
        case STATE.connected:
          // Nothing happens: we're connected
