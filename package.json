@@ -8,7 +8,7 @@
     "build": "babel src --out-dir dist --source-maps inline --presets es2015",
     "watch": "babel src --watch --out-dir dist --source-maps inline --presets es2015",
     "deploy": "./run_app.sh",
-    "run_device": "node dist/main"
+    "server": "node dist/server"
   },
   "repository": {
     "type": "git",

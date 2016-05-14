@@ -100,13 +100,13 @@ function push() {
 }
 
 function pull() {
-  redLight.on();
+  redLed.on();
   buzzer.playSound(buzzerModule.DO, 500);
 }
 
 function connect() {
   greenLed.on();
-  redLight.off();
+  redLed.off();
 }
 
 initialize();
