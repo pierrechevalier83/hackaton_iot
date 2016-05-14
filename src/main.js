@@ -28,15 +28,45 @@
 var sensorModule = require('jsupm_ttp223');
 var buzzerModule = require("jsupm_buzzer");
 var groveSensor = require("jsupm_grove");
+var socket = require('./socket');
 
 const SENSORS = require('./sensors');
-
-var socket = require('./socket');
-socket.init();
+const STATE = {
+  listening: 0,
+  push: 1,
+  pull: 2,
+  connected: 3
+},
+// global state
+var state;
 
 var touch = new sensorModule.TTP223(SENSORS.touch);
 var buzzer = new buzzerModule.Buzzer(SENSORS.buzzer);
 var redLed = new groveSensor.GroveLed(SENSORS.leds.red);
+var greenLed = new groveSensor.GroveLed(SENSORS.leds.green);
+
+function initialize() {
+  socket.init();
+  state = STATE.listening;
+  setInterval(readSensorValue, 100);
+  socket.onMessage((data) => {
+     console.log(data);
+     switch (state) {
+       case STATE.listening:
+       case STATE.pull:
+         state = STATE.pull;
+         pull();
+         break;
+       case STATE.push:
+         state = STATE.connected;
+         connnect();
+         break;
+       case STATE.connected:
+         // Nothing happens: we're connected
+         break;
+     }
+  });
+}
 
 function doStuff(){
   buzzer.playSound(buzzerModule.DO, 10000)
@@ -47,13 +77,39 @@ function doStuff(){
 function readSensorValue() {
   if ( touch.isPressed() ) {
     console.log(touch.name() + " is pressed");
-    socket.send({event: 'on'});
+    switch (state) {
+      case STATE.listening:
+      case STATE.push:
+        state = STATE.push;
+        push();
+        break;
+      case STATE.pull:
+        state = STATE.connected
+        connect();
+        break;
+      case STATE.connected:
+        // Nothing happens: we're connected
+        break;
+      }
+    }
   }
 }
 
-socket.onMessage((data) => console.log(data));
+function push() {
+  socket.send({event: 'push'});
+  // TODO wait listen for 5 seconds and then go back to listening
+}
 
-setInterval(readSensorValue, 100);
+function pull() {
+  redLight.on();
+  buzzer.playSound(buzzerModule.DO, 500);
+}
+
+function connect() {
+  greenLed.on();
+  redLight.off();
+}
+
 
 // Print message when exiting
 process.on('SIGINT', function()
