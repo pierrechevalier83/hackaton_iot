@@ -1,6 +1,6 @@
 #!/bin/sh
 echo $EDISON_HOST
-git checkout -B deploy
+git checkout -b deploy
 mkdir -p dist
 npm run build
 git add -A
