@@ -103,7 +103,7 @@ function readSensorValue() {
     }
   } else {
     if (state === STATE.push) {
-      state = listening;
+      state = STATE.listening;
       updateState();
     }
 
