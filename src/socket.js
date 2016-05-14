@@ -3,11 +3,12 @@ var WebSocket = require('ws');
 var wsServer = 'ws://ruiramos.com:8990'
 var ws;
 
-function init(){
+function init(cb){
   ws = new WebSocket(wsServer);
 
   ws.on('open', function open() {
     // ?
+    cb && cb();
     console.log('ws connection open!')
   });
 

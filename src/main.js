@@ -30,7 +30,7 @@ var redLed = new groveSensor.GroveLed(SENSORS.leds.red);
 var greenLed = new groveSensor.GroveLed(SENSORS.leds.green);
 
 function initialize() {
-  socket.init();
+  socket.init(() => socket.send({event: 'server:connected'}));
   state = STATE.listening;
   setInterval(readSensorValue, 100);
 
@@ -47,8 +47,6 @@ function initialize() {
         setLcdText(msg.text);
      }
   });
-
-  socket.send({event: 'server:connected'});
 
   buzzer.playSound(buzzerModule.DO, 5000);
   buzzer.stopSound();
