@@ -45,7 +45,7 @@ function readSensorValue() {
         buzzer.stopSound();
     }
 }
-setInterval(readSensorValue, 1000);
+setInterval(readSensorValue, 100);
 
 // Print message when exiting
 process.on('SIGINT', function()
