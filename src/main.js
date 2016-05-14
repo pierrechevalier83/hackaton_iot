@@ -36,7 +36,7 @@ const STATE = {
   push: 1,
   pull: 2,
   connected: 3
-},
+};
 // global state
 var state;
 
@@ -90,7 +90,6 @@ function readSensorValue() {
       case STATE.connected:
         // Nothing happens: we're connected
         break;
-      }
     }
   }
 }
