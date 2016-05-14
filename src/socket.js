@@ -30,6 +30,10 @@ function onMessage(cb){
   ws.on('message', cb);
 }
 
+function close(){
+  ws.close();
+}
+
 module.exports = {
-  init, onMessage, send
+  init, onMessage, send, close
 }

@@ -217,8 +217,8 @@ function setLcdText(text, scroll){
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.write(text.substr(0, 15));
-  lcd.setCursor(0,1);
-  lcd.write(text.substr(16, 32));
+  lcd.setCursor(1,0);
+  lcd.write(text.substr(16, 31));
   if(scroll) lcd.scroll();
 }
 
@@ -227,6 +227,7 @@ initialize();
 // Print message when exiting
 process.on('SIGINT', function()
 {
+  socket.close();
 	console.log("Exiting...");
 	process.exit(0);
 });
