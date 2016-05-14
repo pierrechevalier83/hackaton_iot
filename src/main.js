@@ -39,6 +39,8 @@ const STATE = {
 };
 // global state
 var state;
+var connectionTimeout;
+var pullTimeout;
 
 var touch = new sensorModule.TTP223(SENSORS.touch);
 var buzzer = new buzzerModule.Buzzer(SENSORS.buzzer);
@@ -49,23 +51,52 @@ function initialize() {
   socket.init();
   state = STATE.listening;
   setInterval(readSensorValue, 100);
+
   socket.onMessage((data) => {
-     console.log(data);
-     switch (state) {
-       case STATE.listening:
-       case STATE.pull:
-         state = STATE.pull;
-         pull();
-         break;
-       case STATE.push:
-         state = STATE.connected;
-         connect();
-         break;
-       case STATE.connected:
-         // Nothing happens: we're connected
-         break;
+     var msg = JSON.parse(data);
+
+     if(msg.event === 'push'){
+      this.handlePushMessage()
+     } else if(msg.event === 'expired'){
+      this.handleExpiredMessage();
+     } else if(msg.event === 'missed'){
+      this.handleMissedMessage();
      }
   });
+}
+
+function handlePushMessage(){
+  switch (state) {
+   case STATE.listening:
+   case STATE.pull:
+     state = STATE.pull;
+     pull();
+     break;
+   case STATE.push:
+     state = STATE.connected;
+     connect();
+     break;
+   case STATE.connected:
+     // Nothing happens: we're connected
+     break;
+  }
+}
+
+function handleExpiredMessage(){
+  switch(state){
+    case STATE.connected:
+      connectionExpired();
+      break;
+  }
+}
+
+function handleMissedMessage(){
+  switch(state){
+    case STATE.push:
+      state = STATE.listening;
+      updateState();
+      break;
+  }
 }
 
 function readSensorValue() {
@@ -82,29 +113,85 @@ function readSensorValue() {
         connect();
         break;
       case STATE.connected:
-        // Nothing happens: we're connected
+        resetExpiryTimeout();
         break;
     }
   }
 }
 
 function push() {
-  socket.send({event: 'push'});
   console.log('pushing', state);
+  socket.send({event: 'push'});
+  updateState();
   // TODO wait listen for 5 seconds and then go back to listening
 }
 
 function pull() {
-  redLed.on();
-  buzzer.playSound(buzzerModule.DO, 5000)
   console.log('pulling', state);
+
+  updateState();
+  buzzer.playSound(buzzerModule.DO, 5000)
+  setTimeout(() => buzzer.stopSound(), 500);
+
+  if(pullTimeout){
+    clearTimeout(pullTimeout)
+  }
+
+  pullTimeout = setTimeout(pullExpired, 5000);
 }
 
 function connect() {
-  socket.send({event: 'push'});
-  greenLed.on();
-  redLed.off();
   console.log('connected!', state);
+  socket.send({event: 'push'});
+
+  updateState();
+
+  if(pullTimeout){
+    clearTimeout(pullTimeout)
+  }
+
+  connectionTimeout = setTimeout(connectionExpired, 500);
+}
+
+function pullExpired(){
+  console.log('pull expired');
+
+  state = STATE.listening;
+  updateState();
+
+  socket.send({event: 'missed'});
+}
+
+function connectionExpired(){
+  console.log('Connection expired!');
+  state = STATE.listening;
+  updateState();
+
+  clearTimeout(connectionTimeout);
+  socket.send({event: 'expired'});
+}
+
+function resetExpiryTimeout(){
+  clearTimeout(connectionTimeout);
+  connectionTimeout = setTimeout(connectionExpired, 500);
+}
+
+function updateState(){
+  switch(state){
+    case STATE.listening:
+      redLed.off();
+      greenLed.off();
+      break;
+    case STATE.pull:
+      redLed.on();
+      greenLed.off();
+    case STATE.push:
+      redLed.off();
+      greenLed.off();
+    case STATE.connected:
+      redLed.off();
+      greenLed.on();
+  }
 }
 
 initialize();
