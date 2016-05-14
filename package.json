@@ -1,0 +1,25 @@
+{
+  "name": "hackaton_iot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "build": "babel main.js --out-file dist/main.js --source-maps inline",
+     "watch": "babel main.js --watch --out-file dist/main.js --source-maps inline",
+     "push": "./run_app.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pierrechevalier83/hackaton_iot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pierrechevalier83/hackaton_iot/issues"
+  },
+  "homepage": "https://github.com/pierrechevalier83/hackaton_iot#readme",
+  "devDependencies": {
+    "babel-cli": "^6.8.0"
+  }
+}
