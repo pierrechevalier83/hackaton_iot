@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel main.js --out-file dist/main.js --source-maps inline --presets es2015",
-    "watch": "babel main.js --watch --out-file dist/main.js --source-maps inline --presets es2015",
+    "build": "babel src --out-dir dist --source-maps inline --presets es2015",
+    "watch": "babel src --watch --out-dir dist --source-maps inline --presets es2015",
     "deploy": "./run_app.sh",
     "run_device": "node dist/main"
   },
