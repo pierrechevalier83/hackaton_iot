@@ -37,6 +37,10 @@ const STATE = {
   pull: 2,
   connected: 3
 };
+
+var connectionExpiryTimeout = 3000;
+var pullExpiredTimeout = 5000;
+
 // global state
 var state;
 var connectionTimeout;
@@ -137,7 +141,7 @@ function pull() {
     clearTimeout(pullTimeout)
   }
 
-  pullTimeout = setTimeout(pullExpired, 5000);
+  pullTimeout = setTimeout(pullExpired, pullExpiredTimeout);
 }
 
 function connect() {
@@ -150,7 +154,7 @@ function connect() {
     clearTimeout(pullTimeout)
   }
 
-  connectionTimeout = setTimeout(connectionExpired, 500);
+  connectionTimeout = setTimeout(connectionExpired, connectionExpiryTimeout);
 }
 
 function pullExpired(){
@@ -173,7 +177,7 @@ function connectionExpired(){
 
 function resetExpiryTimeout(){
   clearTimeout(connectionTimeout);
-  connectionTimeout = setTimeout(connectionExpired, 500);
+  connectionTimeout = setTimeout(connectionExpired, connectionExpiryTimeout);
 }
 
 function updateState(){

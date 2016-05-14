@@ -1,6 +1,6 @@
 
 var WebSocket = require('ws');
-var wsServer = 'ws://172.16.40.132:8990'
+var wsServer = 'ws://ruiramos.com:8990'
 var ws;
 
 function init(){
