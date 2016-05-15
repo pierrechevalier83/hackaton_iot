@@ -11,12 +11,12 @@ const SENSORS = require('./sensors');
 const STATE = {
   listening: 0,
   connecting: {
-    push: 0,
-    pull: 1
+    push: 1,
+    pull: 2
   },
   connected: {
-    push: 0,
-    pull: 1
+    push: 3,
+    pull: 4
   }
 };
 
