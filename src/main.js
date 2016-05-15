@@ -14,7 +14,10 @@ const STATE = {
     push: 0,
     pull: 1
   },
-  connected: 3
+  connected: {
+    push: 0,
+    pull: 1
+  }
 };
 
 var connectionExpiryTimeout = 3000;
@@ -68,7 +71,7 @@ function handlePushMessage(){
      pull();
      break;
    case STATE.connecting.push:
-     state = STATE.connected;
+     state = STATE.connected.push;
      connect();
      break;
    case STATE.connected:
@@ -104,7 +107,7 @@ function readSensorValue() {
         push();
         break;
       case STATE.connecting.pull:
-        state = STATE.connected
+        state = STATE.connected.pull;
         connect();
         break;
       case STATE.connected:
