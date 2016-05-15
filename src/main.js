@@ -253,7 +253,7 @@ function updateState(){
       greenLed.on();
       lcd.setColor(0, 255, 0);
       lcd.clear();
-      lcd.write("Hello, World!");
+      //lcd.write("Hello, World!");
       communicate();
       break;
   }
