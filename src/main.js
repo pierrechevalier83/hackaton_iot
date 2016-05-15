@@ -307,7 +307,19 @@ function setLcdAnswer(value){
   lcd.setCursor(0,0);
   lcd.write(_currentText);
   lcd.setCursor(1,0);
-  lcd.write(value);
+  var emoji = "";
+  if (value < 60) {
+    emoji = ":'(";
+  } else if (value < 120) {
+    emoji = ":-(";
+  } else if (value < 180) {
+    emoji = ":-|";
+  } else if (value < 240) {
+    emoji = ":-)";
+  } else {
+    emoji = ":-D";
+  }
+  lcd.write(emoji);
 }
 
 initialize();
