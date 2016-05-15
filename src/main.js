@@ -267,6 +267,14 @@ function setLcdText(text, scroll){
   lcd.setCursor(1,0);
   lcd.write(text.substr(15, 30));
   if(scroll) lcd.scroll();
+
+  if(text.length > 30){
+    setTimeout(() => {
+      if(isConnected()){
+        setLcdText(text.substr(30));
+      }
+    }, 1500);
+  }
 }
 
 initialize();
