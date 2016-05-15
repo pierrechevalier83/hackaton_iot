@@ -65,7 +65,7 @@ function initialize() {
 }
 
 function isConnected() {
-  return state === STATE.connected.push || STATE.connected.pull;
+  return state === STATE.connected.push || state === STATE.connected.pull;
 }
 
 function handlePushMessage(){
