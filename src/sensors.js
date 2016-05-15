@@ -7,4 +7,5 @@ module.exports = {
   buzzer: 5,
   touch: 2,
   lcd: 0,
+  rotary: 0,
 };

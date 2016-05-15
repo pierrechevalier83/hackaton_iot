@@ -34,6 +34,7 @@ var buzzer = new buzzerModule.Buzzer(SENSORS.buzzer);
 var lcd = new lcdModule.Jhd1313m1(SENSORS.lcd);
 var redLed = new groveSensor.GroveLed(SENSORS.leds.red);
 var greenLed = new groveSensor.GroveLed(SENSORS.leds.green);
+var rotary = new groveSensor.GroveRotary(SENSORS.rotary);
 
 function initialize() {
   socket.init(() => {
@@ -209,6 +210,7 @@ function updateState(){
       greenLed.off();
       lcd.setColor(0, 0, 0);
       lcd.clear();
+      setLcdText(rotary.rel_value());
       break;
     case STATE.connecting.pull:
       redLed.on();
