@@ -167,6 +167,20 @@ function connect() {
   connectionTimeout = setTimeout(connectionExpired, connectionExpiryTimeout);
 }
 
+function communicate() {
+  if (state === STATE.connected.pull) {
+    // TODO: can be:
+    // * Speak -> pull means get state from them
+    // *  Q/A, -> pull means answer (using rotary)
+    // * Check weather > pull means display other weather
+  } else if (state === STATE.connected.push) {
+    // TODO: can be:
+    // * Speak -> push means send state to them
+    // *  Q/A, -> push means ask (using button to select)
+    // * Check weather > push means send weather to them
+  }
+}
+
 function pullExpired(){
   console.log('pull expired');
 
@@ -235,7 +249,7 @@ function updateState(){
       lcd.setColor(0, 255, 0);
       lcd.clear();
       lcd.write("Hello, World!");
-      // TODO: sync screens
+      communicate();
       break;
   }
 }
