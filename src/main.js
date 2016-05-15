@@ -31,8 +31,9 @@ var greenLed = new groveSensor.GroveLed(SENSORS.leds.green);
 
 function initialize() {
   socket.init(() => {
-    state = STATE.connected;
-    socket.send({event: 'server:connected'});
+    // @todo remove -- this was debug only
+    // state = STATE.connected;
+    // socket.send({event: 'server:connected'});
   });
 
   state = STATE.listening;
@@ -68,7 +69,7 @@ function handlePushMessage(){
      connect();
      break;
    case STATE.connected:
-     // Nothi ng happens: we're connected
+     // Nothing happens: we're connected
      break;
   }
 }
@@ -216,9 +217,9 @@ function updateState(){
 function setLcdText(text, scroll){
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.write(text.substr(0, 15));
+  lcd.write(text.substr(0, 14));
   lcd.setCursor(1,0);
-  lcd.write(text.substr(16, 31));
+  lcd.write(text.substr(15, 30));
   if(scroll) lcd.scroll();
 }
 
