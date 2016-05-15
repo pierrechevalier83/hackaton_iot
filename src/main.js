@@ -66,7 +66,7 @@ function initialize() {
      } else if(msg.event === 'requestAnswer' && isConnected()){
         startReadingRotary(rotaryValue => {
           setLcdAnswer(rotaryValue);
-          socket.send(JSON.stringify({event: 'answer', value: rotaryValue}));
+          socket.send({event: 'answer', value: rotaryValue});
         })
      } else if(msg.event === 'answer'){
         setLcdAnswer(msg.value);
