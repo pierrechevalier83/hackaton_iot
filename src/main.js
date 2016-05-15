@@ -247,7 +247,8 @@ function updateState(){
       lcd.clear();
       lcd.write("Anyone there?");
       break;
-    case STATE.connected:
+    case STATE.connected.push:
+    case STATE.connected.pull:
       redLed.off();
       greenLed.on();
       lcd.setColor(0, 255, 0);
