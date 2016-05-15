@@ -309,15 +309,15 @@ function setLcdAnswer(value){
   lcd.setCursor(1,0);
   var emoji = "";
   if (value < 60) {
-    emoji = ":'(";
+    emoji = "            :'(";
   } else if (value < 120) {
-    emoji = ":-(";
+    emoji = "            :-(";
   } else if (value < 180) {
-    emoji = ":-|";
+    emoji = "            :-|";
   } else if (value < 240) {
-    emoji = ":-)";
+    emoji = "            :-)";
   } else {
-    emoji = ":-D";
+    emoji = "            :-D";
   }
   lcd.write(emoji);
 }
