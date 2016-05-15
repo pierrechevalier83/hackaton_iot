@@ -222,9 +222,9 @@ function updateState(){
     case STATE.listening:
       redLed.off();
       greenLed.off();
-      lcd.setColor(0, 0, 0);
-      lcd.clear();
-      setLcdText(rotary.rel_deg().toString());
+      //lcd.setColor(0, 0, 0);
+      //lcd.clear();
+      //setLcdText(rotary.rel_deg().toString());
       break;
     case STATE.connecting.pull:
       redLed.on();
