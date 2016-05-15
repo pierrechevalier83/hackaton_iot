@@ -29,6 +29,9 @@ var state;
 var connectionTimeout;
 var pullTimeout;
 
+// lcd text buffer
+var _currentText;
+
 var touch = new sensorModule.TTP223(SENSORS.touch);
 var buzzer = new buzzerModule.Buzzer(SENSORS.buzzer);
 var lcd = new lcdModule.Jhd1313m1(SENSORS.lcd);
@@ -59,6 +62,12 @@ function initialize() {
         handleMissedMessage();
      } else if(msg.event === 'setText' && isConnected()){
         setLcdText(msg.text);
+     } else if(msg.event === 'requestAnswer' && isConnected()){
+        var rotary = rotary.abs_deg().toString();
+        setLcdAnswer(rotary);
+        socket.send(JSON.stringify({event: 'answer', value: rotary}));
+     } else if(msg.event === 'answer'){
+        setLcdAnswer(msg.value);
      }
   });
 
@@ -162,7 +171,7 @@ function pull() {
 function connect() {
   console.log('connected!', state);
   socket.send({event: 'push'});
-  socket.send({event: 'server:connected'});
+  socket.send({event: 'server:connected', state: state});
 
   updateState();
 
@@ -260,11 +269,13 @@ function updateState(){
 }
 
 function setLcdText(text, scroll){
+  _currentText = text;
+
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.write(text.substr(0, 14));
   lcd.setCursor(1,0);
-  lcd.write(text.substr(15, 30));
+  lcd.write(text.substr(14, 30));
   if(scroll) lcd.scroll();
 
   if(text.length > 30){
@@ -274,6 +285,14 @@ function setLcdText(text, scroll){
       }
     }, 2000);
   }
+}
+
+function setLcdAnswer(value){
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.write(_currentText);
+  lcd.setCursor(1,0);
+  lcd.write(value);
 }
 
 initialize();
