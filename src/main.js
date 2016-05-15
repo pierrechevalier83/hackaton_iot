@@ -55,13 +55,17 @@ function initialize() {
         handleExpiredMessage();
      } else if(msg.event === 'missed'){
         handleMissedMessage();
-     } else if(msg.event === 'setText' && state === STATE.connected){
+     } else if(msg.event === 'setText' && isConnected()){
         setLcdText(msg.text);
      }
   });
 
   buzzer.playSound(buzzerModule.DO, 5000);
   buzzer.stopSound();
+}
+
+function isConnected() {
+  return state === STATE.connected.push || STATE.connected.pull;
 }
 
 function handlePushMessage(){
@@ -75,17 +79,16 @@ function handlePushMessage(){
      state = STATE.connected.push;
      connect();
      break;
-   case STATE.connected:
+   case STATE.connected.push:
+   case STATE.connected.pull:
      // Nothing happens: we're connected
      break;
   }
 }
 
 function handleExpiredMessage(){
-  switch(state){
-    case STATE.connected:
-      connectionExpired();
-      break;
+  if (isConnected()) {
+     connectionExpired();
   }
 }
 
@@ -111,7 +114,8 @@ function readSensorValue() {
         state = STATE.connected.pull;
         connect();
         break;
-      case STATE.connected:
+      case STATE.connected.push:
+      case STATE.connected.pull:
         resetExpiryTimeout();
         break;
     }
@@ -126,7 +130,7 @@ function readSensorValue() {
     // connection breaks
     // maybe we need another timeout here that will send this expiry *unless*
     // it gets
-    else if(state === STATE.connected){
+    else if(isConnected()){
       leftConnection();
     }
 
@@ -222,9 +226,9 @@ function updateState(){
     case STATE.listening:
       redLed.off();
       greenLed.off();
-      //lcd.setColor(0, 0, 0);
-      //lcd.clear();
-      //setLcdText(rotary.rel_deg().toString());
+      lcd.setColor(0, 0, 0);
+      lcd.clear();
+      setLcdText(rotary.abs_deg().toString());
       break;
     case STATE.connecting.pull:
       redLed.on();
