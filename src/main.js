@@ -10,8 +10,10 @@ var socket = require('./socket');
 const SENSORS = require('./sensors');
 const STATE = {
   listening: 0,
-  push: 1,
-  pull: 2,
+  connecting: {
+    push: 0,
+    pull: 1
+  },
   connected: 3
 };
 
@@ -61,11 +63,11 @@ function initialize() {
 function handlePushMessage(){
   switch (state) {
    case STATE.listening:
-   case STATE.pull:
-     state = STATE.pull;
+   case STATE.connecting.pull:
+     state = STATE.connecting.pull;
      pull();
      break;
-   case STATE.push:
+   case STATE.connecting.push:
      state = STATE.connected;
      connect();
      break;
@@ -85,7 +87,7 @@ function handleExpiredMessage(){
 
 function handleMissedMessage(){
   switch(state){
-    case STATE.push:
+    case STATE.connecting.push:
       state = STATE.listening;
       updateState();
       break;
@@ -97,11 +99,11 @@ function readSensorValue() {
     console.log(touch.name() + " is pressed");
     switch (state) {
       case STATE.listening:
-      case STATE.push:
-        state = STATE.push;
+      case STATE.connecting.push:
+        state = STATE.connecting.push;
         push();
         break;
-      case STATE.pull:
+      case STATE.connecting.pull:
         state = STATE.connected
         connect();
         break;
@@ -110,7 +112,7 @@ function readSensorValue() {
         break;
     }
   } else {
-    if (state === STATE.push) {
+    if (state === STATE.connecting.push) {
       state = STATE.listening;
       updateState();
     }
@@ -206,7 +208,7 @@ function updateState(){
       lcd.setColor(0, 0, 0);
       lcd.clear();
       break;
-    case STATE.pull:
+    case STATE.connecting.pull:
       redLed.on();
       greenLed.off();
       lcd.setColor(255, 0, 0);
@@ -216,7 +218,7 @@ function updateState(){
       lcd.write("let me hang!");
       lcd.setCursor(0,0);
       break;
-    case STATE.push:
+    case STATE.connecting.push:
       redLed.off();
       greenLed.off();
       lcd.setColor(0, 0, 255);
@@ -229,6 +231,7 @@ function updateState(){
       lcd.setColor(0, 255, 0);
       lcd.clear();
       lcd.write("Hello, World!");
+      // TODO: sync screens
       break;
   }
 }
