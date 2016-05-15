@@ -136,7 +136,6 @@ function push() {
   console.log('pushing', state);
   socket.send({event: 'push'});
   updateState();
-  // TODO wait listen for 5 seconds and then go back to listening
 }
 
 function pull() {
