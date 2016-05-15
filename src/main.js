@@ -17,6 +17,7 @@ const STATE = {
 
 var connectionExpiryTimeout = 3000;
 var pullExpiredTimeout = 5000;
+var leftConnectionTimeout = 1000;
 
 // global state
 var state;
@@ -112,8 +113,15 @@ function readSensorValue() {
     if (state === STATE.push) {
       state = STATE.listening;
       updateState();
-    } else if(state === STATE.connected){
-      socket.send({event: 'expired'});
+    }
+    // this makes sense but requires some more though.
+    // the case is when you're connected and leave (stop holding)
+    // you should eventually send an event signaling that you left so the
+    // connection breaks
+    // maybe we need another timeout here that will send this expiry *unless*
+    // it gets
+    else if(state === STATE.connected){
+      leftConnection();
     }
 
   }
@@ -177,6 +185,17 @@ function connectionExpired(){
 function resetExpiryTimeout(){
   clearTimeout(connectionTimeout);
   connectionTimeout = setTimeout(connectionExpired, connectionExpiryTimeout);
+
+  if(leftConnectionTimeout){
+    leftConnectionTimeout = null;
+    clearTimeout(leftConnectionTimeout);
+  }
+}
+
+function leftConnection(){
+  if(!leftConnectionTimeout){
+    leftConnectionTimeout = setTimeout(connectionExpired, connectionExpiryTimeout);
+  }
 }
 
 function updateState(){
