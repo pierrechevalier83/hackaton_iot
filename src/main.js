@@ -202,6 +202,7 @@ function connectionExpired(){
   updateState();
 
   clearTimeout(connectionTimeout);
+  clearTimeout(leftConnectionTimeout);
   socket.send({event: 'expired'});
   socket.send({event: 'server:disconnected'});
 
@@ -209,12 +210,10 @@ function connectionExpired(){
 
 function resetExpiryTimeout(){
   clearTimeout(connectionTimeout);
-  connectionTimeout = setTimeout(connectionExpired, connectionExpiryTimeout);
+  clearTimeout(leftConnectionTimeout);
 
-  if(leftConnectionTimeout){
-    leftConnectionTimeout = null;
-    clearTimeout(leftConnectionTimeout);
-  }
+  connectionTimeout = setTimeout(connectionExpired, connectionExpiryTimeout);
+  leftConnectionTimeout = null;
 }
 
 function leftConnection(){
@@ -273,7 +272,7 @@ function setLcdText(text, scroll){
       if(isConnected()){
         setLcdText(text.substr(30));
       }
-    }, 1500);
+    }, 2000);
   }
 }
 
