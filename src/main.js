@@ -210,7 +210,7 @@ function updateState(){
       greenLed.off();
       lcd.setColor(0, 0, 0);
       lcd.clear();
-      setLcdText(rotary.rel_value().toString());
+      setLcdText(rotary.rel_rad().toString());
       break;
     case STATE.connecting.pull:
       redLed.on();
