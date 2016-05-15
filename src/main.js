@@ -28,6 +28,7 @@ var leftConnectionTimeout = 1000;
 var state;
 var connectionTimeout;
 var pullTimeout;
+var rotaryInterval;
 
 // lcd text buffer
 var _currentText;
@@ -63,9 +64,10 @@ function initialize() {
      } else if(msg.event === 'setText' && isConnected()){
         setLcdText(msg.text);
      } else if(msg.event === 'requestAnswer' && isConnected()){
-        var rotary = rotary.abs_deg().toString();
-        setLcdAnswer(rotary);
-        socket.send(JSON.stringify({event: 'answer', value: rotary}));
+        startReadingRotary(v => {
+          setLcdAnswer(rotaryValue);
+          socket.send(JSON.stringify({event: 'answer', value: rotaryValue}));
+        })
      } else if(msg.event === 'answer'){
         setLcdAnswer(msg.value);
      }
@@ -77,6 +79,17 @@ function initialize() {
 
 function isConnected() {
   return state === STATE.connected.push || state === STATE.connected.pull;
+}
+
+function startReadingRotary(cb){
+  rotaryInterval = setInterval(() => {
+    var rotaryValue = rotary.abs_deg().toString();
+    cb(rotaryValue);
+  }, 200);
+}
+
+function stopReadingRotary(){
+  clearInterval(rotaryInterval);
 }
 
 function handlePushMessage(){
@@ -209,6 +222,8 @@ function connectionExpired(){
   console.log('Connection expired!');
   state = STATE.listening;
   updateState();
+
+  stopReadingRotary();
 
   clearTimeout(connectionTimeout);
   clearTimeout(leftConnectionTimeout);
